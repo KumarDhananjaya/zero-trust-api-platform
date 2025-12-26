@@ -5,8 +5,8 @@ services:
     image: postgres:15-alpine
     container_name: ztsap-postgres
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
       POSTGRES_DB: ztsap_db
     ports:
       - "5432:5432"

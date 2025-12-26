@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Policy {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  effect      String   // "allow" or "deny"
+  
+  // RBAC
+  roles       String[] // e.g. ["admin", "editor"]
+  
+  // ABAC / Scope
+  actions     String[] // e.g. ["read", "write", "*"]
+  resources   String[] // e.g. ["orders", "users/*"]
+  
+  // Advanced Conditions (JSON logic)
+  conditions  Json?    // e.g. { "time_start": "09:00", "ip_range": "10.0.0.0/8" }
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
