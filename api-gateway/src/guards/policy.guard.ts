@@ -17,7 +17,7 @@ export class PolicyGuard implements CanActivate {
         // Construct Resource/Action from request
         // E.g. POST /orders -> action: "create", resource: "orders"
         // For now, mapping method to action:
-        const methodMap = {
+        const methodMap: Record<string, string> = {
             GET: 'read',
             POST: 'create',
             PUT: 'update',

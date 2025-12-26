@@ -1,5 +1,5 @@
 import { Controller, All, Req, Res, UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from './guards/auth.guard';
@@ -13,20 +13,20 @@ export class AppController {
     private configService: ConfigService
   ) { }
 
-  @All('auth/*')
+  @All('auth/*path')
   async proxyAuth(@Req() req: Request, @Res() res: Response) {
     const serviceUrl = this.configService.get('AUTH_SERVICE_URL');
     await this.proxyRequest(serviceUrl, req, res, '/auth');
   }
 
-  @All('policies/*')
+  @All('policies/*path')
   @UseGuards(AuthGuard) // Protect policy management
   async proxyPolicy(@Req() req: Request, @Res() res: Response) {
     const serviceUrl = this.configService.get('POLICY_SERVICE_URL');
     await this.proxyRequest(serviceUrl, req, res, '/policies');
   }
 
-  @All('audit/*')
+  @All('audit/*path')
   @UseGuards(AuthGuard) // Protect audit logs
   async proxyAudit(@Req() req: Request, @Res() res: Response) {
     const serviceUrl = this.configService.get('AUDIT_SERVICE_URL');
@@ -34,7 +34,7 @@ export class AppController {
   }
 
   // Public Endpoint example (no guards)
-  @All('public/*')
+  @All('public/*path')
   async proxyPublic(@Req() req: Request, @Res() res: Response) {
     const serviceUrl = this.configService.get('AUTH_SERVICE_URL'); // Example
     await this.proxyRequest(serviceUrl, req, res, '/public');

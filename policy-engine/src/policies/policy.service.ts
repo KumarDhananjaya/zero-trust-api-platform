@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-export interface EvaluationRequest {
+export class EvaluationRequest {
     user: {
         id: string;
         roles: string[];
@@ -40,7 +40,7 @@ export class PolicyService {
             // Check Resource (Simple prefix match or exact)
             const resourceMatch = policy.resources.includes('*') ||
                 policy.resources.includes(resource) ||
-                (policy.resources.some(r => r.endsWith('*') && resource.startsWith(r.slice(0, -1))));
+                (policy.resources.some((r: string) => r.endsWith('*') && resource.startsWith(r.slice(0, -1))));
 
             if (actionMatch && resourceMatch) {
                 // TODO: Check JSON conditions (ABAC) here
