@@ -1,0 +1,21 @@
+{
+  "name": "zero-trust-api-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "auth-service",
+    "policy-engine",
+    "audit-service",
+    "api-gateway",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "echo 'Run specific service dev script'",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
