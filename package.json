@@ -10,7 +10,8 @@
     "dashboard"
   ],
   "scripts": {
-    "dev": "echo 'Run specific service dev script'",
+    "start:dev": "concurrently \"npm run start:dev -w auth-service\" \"npm run start:dev -w policy-engine\" \"npm run start:dev -w audit-service\" \"npm run start:dev -w api-gateway\" \"npm run dev -w dashboard\"",
+    "dev": "npm run start:dev",
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
     "lint": "npm run lint --workspaces"

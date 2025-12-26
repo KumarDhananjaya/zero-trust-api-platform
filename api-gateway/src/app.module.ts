@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthGuard } from './guards/auth.guard';
 import { PolicyGuard } from './guards/policy.guard';
+import { AuditInterceptor } from './interceptors/audit.interceptor';
 
 @Module({
   imports: [
@@ -21,6 +22,14 @@ import { PolicyGuard } from './guards/policy.guard';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AuthGuard, PolicyGuard],
+  providers: [
+    AppService,
+    AuthGuard,
+    PolicyGuard,
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: AuditInterceptor,
+    }
+  ],
 })
 export class AppModule { }

@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  timestamp DateTime @default(now())
+  
+  // Who
+  userId    String?
+  ipAddress String
+  userAgent String?
+  
+  // What
+  method    String
+  endpoint  String
+  status    Int
+  
+  // Risk
+  riskScore Int      @default(0) // 0-100
+  riskFlags String[] // e.g. ["high_velocity", "geo_mismatch"]
+}

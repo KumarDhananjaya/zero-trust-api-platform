@@ -26,6 +26,13 @@ export class AppController {
     await this.proxyRequest(serviceUrl, req, res, '/policies');
   }
 
+  @All('audit/*')
+  @UseGuards(AuthGuard) // Protect audit logs
+  async proxyAudit(@Req() req: Request, @Res() res: Response) {
+    const serviceUrl = this.configService.get('AUDIT_SERVICE_URL');
+    await this.proxyRequest(serviceUrl, req, res, '/audit');
+  }
+
   // Public Endpoint example (no guards)
   @All('public/*')
   async proxyPublic(@Req() req: Request, @Res() res: Response) {

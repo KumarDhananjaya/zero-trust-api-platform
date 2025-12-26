@@ -3,17 +3,22 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: ztsap-postgres
+    container_name: ztsap-postgres-v2
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
       POSTGRES_DB: ztsap_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_v2:/var/lib/postgresql/data
     networks:
       - ztsap-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d ztsap_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -23,11 +28,9 @@ services:
     networks:
       - ztsap-network
 
-  # Services will be added here as we build them, or run locally via npm run start:dev
-
 networks:
   ztsap-network:
     driver: bridge
 
 volumes:
-  postgres_data:
+  postgres_data_v2:
