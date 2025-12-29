@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 export class EvaluationRequest {
@@ -13,8 +13,28 @@ export class EvaluationRequest {
 }
 
 @Injectable()
-export class PolicyService {
+export class PolicyService implements OnModuleInit {
+    private readonly logger = new Logger(PolicyService.name);
+
     constructor(private prisma: PrismaService) { }
+
+    async onModuleInit() {
+        // Seed default Admin Policy if none exists
+        const count = await this.prisma.policy.count();
+        if (count === 0) {
+            this.logger.log('Seeding default Admin Policy...');
+            await this.prisma.policy.create({
+                data: {
+                    name: 'Super Admin',
+                    roles: ['admin'],
+                    actions: ['*'],
+                    resources: ['*'],
+                    effect: 'allow',
+                }
+            });
+            this.logger.log('Default Admin Policy created. Users with "admin" role have full access.');
+        }
+    }
 
     async evaluate(request: EvaluationRequest): Promise<{ allow: boolean; reason?: string }> {
         const { user, action, resource } = request;
