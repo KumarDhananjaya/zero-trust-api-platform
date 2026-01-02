@@ -53,3 +53,13 @@ The platform consists of a centralized **API Gateway** that enforces security po
 ├── infra/             # K8s & Docker Configs
 └── security/          # Threat Models & Compliance Docs
 ```
+
+## ✨ Key Capabilities
+
+- Centralized API Gateway with JWT validation and policy enforcement
+- OAuth2 / OIDC-based authentication and authorization
+- Fine-grained RBAC and ABAC via a dedicated Policy Decision Point (PDP)
+- Policy-as-Code for decoupled and auditable access control
+- Distributed audit logging for compliance and security analytics
+- Rate limiting and request validation at the gateway layer
+- Modular microservices with independent scaling and deployment
